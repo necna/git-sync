@@ -57,10 +57,15 @@ if [[ -n "$DESTINATION_SSH_PRIVATE_KEY" ]]; then
   git config --local core.sshCommand "/usr/bin/ssh -i ~/.ssh/dst_rsa"
 fi
 
+git config user.name $USER_NAME
+git config user.email $USER_EMAIL
+
 rm -rf /root/dst/* && git add -A && git commit -m "deleted all files" && git push -f
 
 # git push destination "${SOURCE_BRANCH}:${DESTINATION_BRANCH}" -f
 
 cd /root/new_source
+git config user.name $USER_NAME
+git config user.email $USER_EMAIL
 git remote add origin "$DESTINATION_REPO"
 git push -f --set-upstream origin master
