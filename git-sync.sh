@@ -60,11 +60,15 @@ fi
 git config user.name $USER_NAME
 git config user.email $USER_EMAIL
 
-rm -rf /root/dst/* && git add -A && git commit -m "deleted all files" && git push -f
+rm -rf /root/dst/* && rm -rf /root/dst/{.github,.gitignore,.gitpod.Dockerfile,.gitpod.yml,.editorconfig} && git add -A && git commit -m "deleted all files" && git push -f
 
 # git push destination "${SOURCE_BRANCH}:${DESTINATION_BRANCH}" -f
 
 cd /root/new_source
+if [[ -n "$DESTINATION_SSH_PRIVATE_KEY" ]]; then
+  # Push using destination ssh key if provided
+  git config --local core.sshCommand "/usr/bin/ssh -i ~/.ssh/dst_rsa"
+fi
 git config user.name $USER_NAME
 git config user.email $USER_EMAIL
 git remote add origin "$DESTINATION_REPO"
